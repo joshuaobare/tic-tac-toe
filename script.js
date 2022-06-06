@@ -6,6 +6,11 @@ const Player = (name,marker) => {
 
 
 
-const player1 = Player('jeff','X')
-const player2 = Player('nani')
+const cell = document.querySelectorAll('.cell')
 
+cell.forEach(() => {
+    cell.addEventListener(click,function (e) {
+        
+    },{once:true})
+}
+)
