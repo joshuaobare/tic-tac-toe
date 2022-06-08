@@ -17,7 +17,19 @@ const gameBoard = (() => {
     const player1 = playerFactory('P1','X')
     const player2 = playerFactory('P2','O')
 
+    const playerSwapper = (e) => {
+        if (boardContent.length === 0) {
+            player1.playTurn(e)
+        } 
 
+        if (boardContent[boardContent.length-1] === 'X') {
+            player2.playTurn(e)
+        }
+
+        if (boardContent[boardContent.length-1] === 'O') {
+            player1.playTurn(e)
+        }
+    }
     
 
    
@@ -29,25 +41,7 @@ const gameBoard = (() => {
         
         
         console.log(e)
-        
-
-        function playerSwapper() {
-            
-            if (boardContent.length === 0) {
-                player1.playTurn(e)
-            } 
-    
-            if (boardContent[boardContent.length-1] === 'X') {
-                player2.playTurn(e)
-            }
-
-            if (boardContent[boardContent.length-1] === 'O') {
-                player1.playTurn(e)
-            }
-            
-        }
-
-        playerSwapper()
+        playerSwapper(e)
         boardContent.push(e.target.innerHTML)
         console.log(boardContent)
         console.log(square)
