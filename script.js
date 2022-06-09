@@ -36,16 +36,15 @@ const gameBoard = (() => {
     const cell = document.querySelectorAll('.cell')
     cell.forEach((square) => { 
         board.push(square)
-        
-    square.addEventListener('click', function(e) {
-        
-        
-        console.log(e)
-        playerSwapper(e)
-        boardContent.push(e.target.innerHTML)
-        console.log(boardContent)
-        console.log(square)
-    },{once:true})
+            
+        square.addEventListener('click', function(e) {
+                       
+            playerSwapper(e)
+            boardContent.push(e.target.innerHTML)
+            console.log(boardContent)
+            console.log(square.innerHTML)
+            console.log(board[0])
+        },{once:true})
 
     })
 
