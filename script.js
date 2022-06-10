@@ -11,6 +11,7 @@ const gameBoard = (() => {
         }
         
         
+        
         return {getName,option,playTurn};
     }
 
@@ -31,6 +32,28 @@ const gameBoard = (() => {
         }
     }
     
+    const winnerChecker = (board) => {
+        let winningCombinations = [
+                        [0,1,2],
+                        [0,3,6],
+                        [0,4,8],
+                        [1,4,7],
+                        [2,5,8],
+                        [3,4,5],
+                        [6,7,8]
+                    ]
+
+        return winningCombinations.some(combination => {
+            return combination.every(index => {
+                if (board[index].innerHTML === "O") {
+                    return true
+                }
+                
+            })
+        })
+                
+            
+    }
 
    
     const cell = document.querySelectorAll('.cell')
@@ -44,6 +67,9 @@ const gameBoard = (() => {
             console.log(boardContent)
             console.log(square.innerHTML)
             console.log(board[0])
+            if (winnerChecker(board)) {
+                console.log('winner')
+            }
         },{once:true})
 
     })
