@@ -8,6 +8,7 @@ const gameBoard = (() => {
         const option = () => marker;
         const playTurn = (e) => {
             e.target.innerHTML = marker
+            e.target.classList.add(marker)
         }
         
         
@@ -17,42 +18,48 @@ const gameBoard = (() => {
 
     const player1 = playerFactory('P1','X')
     const player2 = playerFactory('P2','O')
+    let currentMarker
 
     const playerSwapper = (e) => {
         if (boardContent.length === 0) {
             player1.playTurn(e)
+            currentMarker = "X"
+            
         } 
 
         if (boardContent[boardContent.length-1] === 'X') {
             player2.playTurn(e)
+            currentMarker = "O"
+            
         }
 
         if (boardContent[boardContent.length-1] === 'O') {
             player1.playTurn(e)
+            currentMarker = "X"
+            
         }
+        
+        return currentMarker
     }
     
-    const winnerChecker = (board) => {
+    const winnerChecker = (board,x) => {
         let winningCombinations = [
                         [0,1,2],
                         [0,3,6],
                         [0,4,8],
                         [1,4,7],
                         [2,5,8],
+                        [2,4,6],
                         [3,4,5],
                         [6,7,8]
                     ]
 
         return winningCombinations.some(combination => {
-            return combination.every(index => {
-                if (board[index].innerHTML === "O") {
-                    return true
-                }
-                
-            })
+        return combination.every(index => {
+                return board[index].classList.contains(x)
+           })
         })
-                
-            
+    
     }
 
    
@@ -62,14 +69,14 @@ const gameBoard = (() => {
             
         square.addEventListener('click', function(e) {
                        
-            playerSwapper(e)
+            if (winnerChecker(board,playerSwapper(e))) {
+                console.log('winner')
+            }
             boardContent.push(e.target.innerHTML)
             console.log(boardContent)
             console.log(square.innerHTML)
             console.log(board[0])
-            if (winnerChecker(board)) {
-                console.log('winner')
-            }
+            
         },{once:true})
 
     })
