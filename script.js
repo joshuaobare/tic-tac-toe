@@ -3,6 +3,7 @@ const gameBoard = (() => {
     const boardContent =[]
     const winningMessage = document.querySelector('[data-winning-message-text]')
     const winningMessageElement = document.getElementById('winningMessage')
+    const restartButton = document.getElementById('restartButton')
 
     const playerFactory = (name,marker) => {
         const getName = () => name;
@@ -111,6 +112,16 @@ const gameBoard = (() => {
         })
     }
 
+    restartButton.addEventListener('click', () => {
+        cell.forEach((square) => {
+            
+            square.innerHTML = ""
+            square.classList.remove('x')
+            square.classList.remove('O')
+            winningMessageElement.classList.remove('show')
+
+        }
+    )})
 
 
 
