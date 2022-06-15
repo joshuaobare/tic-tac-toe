@@ -1,7 +1,8 @@
 const gameBoard = (() => {
     const board =[]
     const boardContent =[]
-    
+    const winningMessage = document.querySelector('[data-winning-message-text]')
+    const winningMessageElement = document.getElementById('winningMessage')
 
     const playerFactory = (name,marker) => {
         const getName = () => name;
@@ -18,6 +19,7 @@ const gameBoard = (() => {
 
     const player1 = playerFactory('P1','X')
     const player2 = playerFactory('P2','O')
+    
     let currentMarker
 
     const playerSwapper = (e) => {
@@ -62,6 +64,24 @@ const gameBoard = (() => {
     
     }
 
+    const gameEnd = (draw,e) => {
+        if(draw) {
+            winningMessage.innerText = 'Draw!'
+        }
+        else {
+            if (e.target.innerHTML === 'X') {
+                winningMessage.innerText = `${player1.getName()} Wins`
+            }
+            else {
+                winningMessage.innerText = `${player2.getName()} Wins`
+            }
+            
+        }
+        winningMessageElement.classList.add('show')
+
+    }
+
+    
    
     const cell = document.querySelectorAll('.cell')
     cell.forEach((square) => { 
@@ -70,16 +90,26 @@ const gameBoard = (() => {
         square.addEventListener('click', function(e) {
                        
             if (winnerChecker(board,playerSwapper(e))) {
-                console.log('winner')
+                gameEnd(false,e)
             }
+            else if (drawChecker()) {
+                gameEnd(true,e)
+            }
+            else {
+                playerSwapper(e) 
+            }
+
             boardContent.push(e.target.innerHTML)
-         /*   console.log(boardContent)
-            console.log(square.innerHTML)
-            console.log(board[0])*/
+         
             
         },{once:true})
 
     })
+    const drawChecker = () => {
+        return [...cell].every(cellElement => {
+            return cellElement.classList.contains("X") || cellElement.classList.contains("O")
+        })
+    }
 
 
 
