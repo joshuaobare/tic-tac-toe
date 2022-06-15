@@ -73,9 +73,9 @@ const gameBoard = (() => {
                 console.log('winner')
             }
             boardContent.push(e.target.innerHTML)
-            console.log(boardContent)
+         /*   console.log(boardContent)
             console.log(square.innerHTML)
-            console.log(board[0])
+            console.log(board[0])*/
             
         },{once:true})
 
