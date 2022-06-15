@@ -82,46 +82,55 @@ const gameBoard = (() => {
 
     }
 
-    
+    const gameFlow = (e) => {
+
+        if (winnerChecker(board,playerSwapper(e))) {
+            gameEnd(false,e)
+        }
+        else if (drawChecker()) {
+            gameEnd(true,e)
+        }
+        else {
+            playerSwapper(e) 
+        }
+
+        boardContent.push(e.target.innerHTML)
+    }
    
     const cell = document.querySelectorAll('.cell')
     cell.forEach((square) => { 
         board.push(square)
             
-        square.addEventListener('click', function(e) {
-                       
-            if (winnerChecker(board,playerSwapper(e))) {
-                gameEnd(false,e)
-            }
-            else if (drawChecker()) {
-                gameEnd(true,e)
-            }
-            else {
-                playerSwapper(e) 
-            }
+        square.addEventListener('click', gameFlow,{once:true})
+        restartButton.addEventListener('click', () => {
+            /*
+            console.log(square)
+            square.innerHTML = ""
+            square.classList.remove('X')
+            square.classList.remove('O')
+            square.removeEventListener('click',gameFlow,false)
+            winningMessageElement.classList.remove('show') */
+            location.reload()
 
-            boardContent.push(e.target.innerHTML)
-         
-            
-        },{once:true})
+    })})
 
-    })
     const drawChecker = () => {
         return [...cell].every(cellElement => {
             return cellElement.classList.contains("X") || cellElement.classList.contains("O")
         })
     }
 
-    restartButton.addEventListener('click', () => {
+  /*  restartButton.addEventListener('click', () => {
         cell.forEach((square) => {
-            
+            square.removeEventListener('click',gameFlow)
             square.innerHTML = ""
             square.classList.remove('x')
             square.classList.remove('O')
+            square.removeEventListener('click',gameFlow)
             winningMessageElement.classList.remove('show')
 
         }
-    )})
+    )}) */
 
 
 
