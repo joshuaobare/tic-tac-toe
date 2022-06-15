@@ -1,9 +1,17 @@
+body {
+    margin: 0;
+}
+
+h1 {
+    font-family: monotype;
+    font-size: 4rem;
+    text-align: center;
+}
 .gameboard {
     display:grid;
     grid-template-columns: repeat(3,auto);
    
-    width:100vw;
-    height:100vh;
+     
     
     text-align: center;
     justify-items: center;
@@ -12,7 +20,7 @@
     align-content: center;
 }
 
-.gameboard * {
+.cell {
     border: 2px solid black;
     width: 100px;
     height:100px;
@@ -51,4 +59,26 @@
 
 .winning-message.show {
     display: flex;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 6em;
+    font-family: 'Fredoka One', cursive;
+}
+
+#gb-0,#gb-1,#gb-2 {
+    border-top:0 ;
+}
+#gb-0,#gb-3,#gb-6 {
+    border-left:0;
+}
+
+#gb-7,#gb-8,#gb-6 {
+    border-bottom: 0;
+}
+#gb-2,#gb-5,#gb-8 {
+    border-right: 0;
 }
