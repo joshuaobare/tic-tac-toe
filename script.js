@@ -1,9 +1,27 @@
 const gameBoard = (() => {
     const board =[]
+    const nameArr = []
     const boardContent =[]
     const winningMessage = document.querySelector('[data-winning-message-text]')
     const winningMessageElement = document.getElementById('winningMessage')
     const restartButton = document.getElementById('restartButton')
+    
+    const actualboard = document.getElementById('gameboard')
+    const subbtn = document.getElementById('submit')
+
+    var currentMarker,name1,name2
+
+    const subFunction = (e) => {
+        e.preventDefault()
+        actualboard.classList.remove('hide')
+        name1 = document.getElementById('player1').value
+        name2 = document.getElementById('player2').value
+        nameArr.push(name1)
+        nameArr.push(name2)
+
+        return name1, name2
+    }   
+    subbtn.addEventListener('click', subFunction)
 
     const playerFactory = (name,marker) => {
         const getName = () => name;
@@ -18,10 +36,11 @@ const gameBoard = (() => {
         return {getName,option,playTurn};
     }
 
-    const player1 = playerFactory('P1','X')
-    const player2 = playerFactory('P2','O')
     
-    let currentMarker
+    const player1 = playerFactory(nameArr[0],'X')
+    const player2 = playerFactory(nameArr[1],'O')
+    console.log(player1.getName())
+     
 
     const playerSwapper = (e) => {
         if (boardContent.length === 0) {
@@ -120,21 +139,9 @@ const gameBoard = (() => {
         })
     }
 
-  /*  restartButton.addEventListener('click', () => {
-        cell.forEach((square) => {
-            square.removeEventListener('click',gameFlow)
-            square.innerHTML = ""
-            square.classList.remove('x')
-            square.classList.remove('O')
-            square.removeEventListener('click',gameFlow)
-            winningMessageElement.classList.remove('show')
+  
 
-        }
-    )}) */
-
-
-
-    return {playerFactory}
+    return {playerFactory,subFunction}
     
 })();
 

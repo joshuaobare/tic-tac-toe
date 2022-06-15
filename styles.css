@@ -69,6 +69,24 @@ h1 {
     font-family: 'Fredoka One', cursive;
 }
 
+.hide {
+    display: none;
+}
+
+.formSection {
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    justify-content: center;
+    align-items: center;
+}
+form {
+    display:flex ;
+    gap:20px;
+    justify-content: center;
+    align-items: center;
+}
+
 #gb-0,#gb-1,#gb-2 {
     border-top:0 ;
 }

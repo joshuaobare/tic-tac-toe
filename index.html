@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tic-Tac-Toe</title>
     <link rel="stylesheet" href="styles.css">
     <link
 			href="https://fonts.googleapis.com/css?family=Fredoka+One|Press+Start+2P&display=swap"
@@ -15,19 +15,27 @@
 <body>
     <div id="container">
         <h1>Tic-Tac-Toe</h1>
-        <div>
+        <div class="formSection">
+            <div>Enter Your Names</div>
             <form action="">
-                <label for="player1">Player 1:</label>
-                <input type="text" id="player1">
-                <label for="player2">Player 2:</label>
-                <input type="text" id="player2">
-                <button type="submit" id="submit">Submit</button>
+                <div>
+                    <label for="player1">Player 1:</label>
+                    <input type="text" id="player1" name="player1">
+                </div>
+                <div>
+                    <label for="player2">Player 2:</label>
+                    <input type="text" id="player2" name="player2">
+                </div>
+                <div>
+                    <button type="submit" id="submit">Start Game</button>
+                </div>
+                
             </form>
-            <button id="startgame">Start Game</button>
+            
         </div>
         <div class="gameSection">
             <div class="playernames" id="playernames"></div>
-            <div class="gameboard">
+            <div class="gameboard hide" id="gameboard">
                 <div class="cell" id="gb-0"></div>
                 <div class="cell" id="gb-1"></div>
                 <div class="cell" id="gb-2"></div>
