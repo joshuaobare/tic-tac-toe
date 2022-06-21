@@ -51,15 +51,15 @@ const gameBoard = (() => {
         //const names2 = names.name2
         player1 = playerFactory(name1,'X')
         player2 = playerFactory(name2,'O')
-        player1name.innerHTML = `Player 1:  ${player1.getName()}`
-        player2name.innerHTML = `Player 2:  ${player2.getName()}`
+        player1name.innerHTML = `Player 1:  <span style="color:#D92121";>${player1.getName()}</span>`
+        player2name.innerHTML = `Player 2:  <span style="color:#D92121";>${player2.getName()}</span>`
         
     }   
     subbtn.addEventListener('click', subFunction)
 
     
     
-
+    
     
     
 
