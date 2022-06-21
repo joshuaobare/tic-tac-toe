@@ -1,6 +1,6 @@
 const gameBoard = (() => {
     const board =[]
-    const nameArr = []
+    
     const boardContent =[]
     const winningMessage = document.querySelector('[data-winning-message-text]')
     const winningMessageElement = document.getElementById('winningMessage')
@@ -9,20 +9,19 @@ const gameBoard = (() => {
     const actualboard = document.getElementById('gameboard')
     const subbtn = document.getElementById('submit')
 
-    var currentMarker,name1,name2
+    let player1
+    let player2
+    
 
-    const subFunction = (e) => {
-        e.preventDefault()
-        actualboard.classList.remove('hide')
-        name1 = document.getElementById('player1').value
-        name2 = document.getElementById('player2').value
-        nameArr.push(name1)
-        nameArr.push(name2)
+   /* const nameChecker = () => {
+       let name1 = document.getElementById('player1').value
+       let name2 = document.getElementById('player2').value
+        console.log(name1)
 
-        return name1, name2
-    }   
-    subbtn.addEventListener('click', subFunction)
+        return {name1, name2}
 
+    }
+    nameChecker() */
     const playerFactory = (name,marker) => {
         const getName = () => name;
         const option = () => marker;
@@ -36,10 +35,31 @@ const gameBoard = (() => {
         return {getName,option,playTurn};
     }
 
+    const subFunction = (e) => {
+        e.preventDefault()
+        actualboard.classList.remove('hide')
+        let name1 = document.getElementById('player1').value
+        let name2 = document.getElementById('player2').value
+        
+       // const names = nameChecker()
+       // const names1 = names.name1
+        //const names2 = names.name2
+        player1 = playerFactory(name1,'X')
+        player2 = playerFactory(name2,'O')
+        
+        
+    }   
+    subbtn.addEventListener('click', subFunction)
+
     
-    const player1 = playerFactory(nameArr[0],'X')
-    const player2 = playerFactory(nameArr[1],'O')
-    console.log(player1.getName())
+    
+
+    
+    
+
+    
+    
+    //console.log(player1.getName())
      
 
     const playerSwapper = (e) => {
@@ -102,7 +122,7 @@ const gameBoard = (() => {
     }
 
     const gameFlow = (e) => {
-
+        console.log(e)
         if (winnerChecker(board,playerSwapper(e))) {
             gameEnd(false,e)
         }
@@ -114,6 +134,7 @@ const gameBoard = (() => {
         }
 
         boardContent.push(e.target.innerHTML)
+        console.log(names1)
     }
    
     const cell = document.querySelectorAll('.cell')
@@ -130,6 +151,7 @@ const gameBoard = (() => {
             square.removeEventListener('click',gameFlow,false)
             winningMessageElement.classList.remove('show') */
             location.reload()
+            
 
     })})
 
