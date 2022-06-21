@@ -1,31 +1,19 @@
 const gameBoard = (() => {
     const board =[]
-    
     const boardContent =[]
     const winningMessage = document.querySelector('[data-winning-message-text]')
     const winningMessageElement = document.getElementById('winningMessage')
     const restartButton = document.getElementById('restartButton')
-    const playersection = document.getElementById('playernames')
     const player1name = document.getElementById('player1name')
     const player2name = document.getElementById('player2name')
     const formSection = document.getElementById('formSection')
-
     const actualboard = document.getElementById('gameboard')
     const subbtn = document.getElementById('submit')
-
     let player1
     let player2
     
 
-   /* const nameChecker = () => {
-       let name1 = document.getElementById('player1').value
-       let name2 = document.getElementById('player2').value
-        console.log(name1)
-
-        return {name1, name2}
-
-    }
-    nameChecker() */
+   // playerFunction generates players
     const playerFactory = (name,marker) => {
         const getName = () => name;
         const option = () => marker;
@@ -53,9 +41,7 @@ const gameBoard = (() => {
             name2= "Player2"
         }
         
-       // const names = nameChecker()
-       // const names1 = names.name1
-        //const names2 = names.name2
+       
         player1 = playerFactory(name1,'X')
         player2 = playerFactory(name2,'O')
         player1name.innerHTML = `Player 1:  <span style="color:#D92121";>${player1.getName()}</span>`
@@ -64,17 +50,8 @@ const gameBoard = (() => {
     }   
     subbtn.addEventListener('click', subFunction)
 
-    
-    
-    
-    
-    
-
-    
-    
-    //console.log(player1.getName())
-     
-
+  
+// playerSwapper determines what marker will be placed next based on the last marker in the array
     const playerSwapper = (e) => {
         if (boardContent.length === 0) {
             player1.playTurn(e)
@@ -108,6 +85,8 @@ const gameBoard = (() => {
                         [3,4,5],
                         [6,7,8]
                     ]
+// loops through the winning combinations array, and for each array it loops to find if there's a similar pattern
+// in the board array
 
         return winningCombinations.some(combination => {
         return combination.every(index => {
@@ -116,6 +95,7 @@ const gameBoard = (() => {
         })
     
     }
+
 
     const gameEnd = (draw,e) => {
         if(draw) {
@@ -135,7 +115,7 @@ const gameBoard = (() => {
     }
 
     const gameFlow = (e) => {
-        console.log(e)
+        
         if (winnerChecker(board,playerSwapper(e))) {
             gameEnd(false,e)
         }
@@ -147,7 +127,7 @@ const gameBoard = (() => {
         }
 
         boardContent.push(e.target.innerHTML)
-        console.log(names1)
+        
     }
    
     const cell = document.querySelectorAll('.cell')
@@ -156,18 +136,11 @@ const gameBoard = (() => {
             
         square.addEventListener('click', gameFlow,{once:true})
         restartButton.addEventListener('click', () => {
-            /*
-            console.log(square)
-            square.innerHTML = ""
-            square.classList.remove('X')
-            square.classList.remove('O')
-            square.removeEventListener('click',gameFlow,false)
-            winningMessageElement.classList.remove('show') */
             location.reload()
             
 
     })})
-
+    
     const drawChecker = () => {
         return [...cell].every(cellElement => {
             return cellElement.classList.contains("X") || cellElement.classList.contains("O")
