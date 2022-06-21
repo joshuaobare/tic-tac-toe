@@ -45,6 +45,13 @@ const gameBoard = (() => {
         formSection.style.display = "none"
         let name1 = document.getElementById('player1').value
         let name2 = document.getElementById('player2').value
+
+        if (name1 === "") {
+            name1= "Player1"
+        }
+        if (name2 === "") {
+            name2= "Player2"
+        }
         
        // const names = nameChecker()
        // const names1 = names.name1
