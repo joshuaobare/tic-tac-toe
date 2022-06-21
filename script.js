@@ -5,7 +5,11 @@ const gameBoard = (() => {
     const winningMessage = document.querySelector('[data-winning-message-text]')
     const winningMessageElement = document.getElementById('winningMessage')
     const restartButton = document.getElementById('restartButton')
-    
+    const playersection = document.getElementById('playernames')
+    const player1name = document.getElementById('player1name')
+    const player2name = document.getElementById('player2name')
+    const formSection = document.getElementById('formSection')
+
     const actualboard = document.getElementById('gameboard')
     const subbtn = document.getElementById('submit')
 
@@ -38,6 +42,7 @@ const gameBoard = (() => {
     const subFunction = (e) => {
         e.preventDefault()
         actualboard.classList.remove('hide')
+        formSection.style.display = "none"
         let name1 = document.getElementById('player1').value
         let name2 = document.getElementById('player2').value
         
@@ -46,7 +51,8 @@ const gameBoard = (() => {
         //const names2 = names.name2
         player1 = playerFactory(name1,'X')
         player2 = playerFactory(name2,'O')
-        
+        player1name.innerHTML = `Player 1:  ${player1.getName()}`
+        player2name.innerHTML = `Player 2:  ${player2.getName()}`
         
     }   
     subbtn.addEventListener('click', subFunction)
