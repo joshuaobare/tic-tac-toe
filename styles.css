@@ -85,7 +85,7 @@ h1 {
     gap: 40px;
 }
 .formSection {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     gap:20px;
     justify-content: center;
