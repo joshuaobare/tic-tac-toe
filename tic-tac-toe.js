@@ -1,8 +1,9 @@
 const PlayerFactory = (name, marker) => {
 
-
     return {name, marker}
 }
+
+// coordBuilder creates an array of coordinates based on dataset.coords held by the grid cells
 
 const coordBuilder = (string) => {
     const coords = string.split(",")
@@ -13,11 +14,18 @@ const coordBuilder = (string) => {
 
 
 const Gameboard = (()=>{
-    const board = [
+    board = [
         [undefined,undefined,undefined],
         [undefined,undefined,undefined],
-        [undefined,undefined,undefined]]
-    const playOrder = []
+        [undefined,undefined,undefined]
+    ]
+
+    playOrder = []
+    playableSpots = 9
+
+    const spotDecreaser = () => {
+        playableSpots -= 1
+    }
     
     const playSpot = (e , player) => {
         const { coord } = e.target.dataset 
@@ -27,12 +35,12 @@ const Gameboard = (()=>{
             board[coords[0]][coords[1]] = player.marker
         }
         playOrder.push(player)
+        spotDecreaser()
         
     }
+  
 
-    
-
-    return {playSpot , board , playOrder}
+    return {playSpot , board , playOrder , playableSpots }
 
 })()
 
@@ -89,9 +97,42 @@ const displayController = (() => {
             }
         }
         displayMarkers()
-       if (winnerChecker(activePlayer.marker)) {
-           alert("You have won!!")
-       }
+       
+       endState(activePlayer)
+    }
+
+    const endState = (player) => {
+        const hasWon = winnerChecker(player.marker)
+        const hasDrawn = drawChecker()
+
+        if (hasWon) {
+            winningMessage.innerText = `${player.name} has won!`
+        } 
+        if (hasDrawn){
+            winningMessage.innerText = `DRAW!`
+        }
+
+        if (hasWon || hasDrawn) {
+            winningMessageElement.classList.add('show')
+        }
+
+    }
+
+    const resetGame = () => {
+        
+        location.reload()
+        
+    }
+        
+
+    const drawChecker = () => {
+        const {playOrder} = Gameboard
+
+        if(playOrder.length === 9) {            
+            return true
+        } else {
+            return false
+        }
     }
 
     const winnerChecker = marker => {
@@ -113,11 +154,9 @@ const displayController = (() => {
         board.forEach(items => {
             items.forEach(item => boardContent.push(item))
         })
-        console.log(board)
-        console.log(boardContent)
-
-        return winningCombinations.some(items => {
-            return items.every(item => boardContent[item] === marker)
+       
+        return winningCombinations.some(combination => {
+            return combination.every(item => boardContent[item] === marker)
         })
 
     }
@@ -136,15 +175,13 @@ const displayController = (() => {
         item.addEventListener("click", gameFlow)       
 
     })
+    
+    restartButton.addEventListener("click" , resetGame)
 
 
 })()
 
-/* const player1 = PlayerFactory("name" , "X")
-const player2 = PlayerFactory("name" , "O")
-Gameboard.playSpot("0,0", player1)
-Gameboard.playSpot("0,2", player1)
-Gameboard.playSpot("0,1", player2) */
+
 
 
 
