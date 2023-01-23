@@ -41,13 +41,13 @@ const Gameboard = (()=>{
                 })
             })
 
-            const spot =Game.minimax(board , player)
-                        
+            const spot = Game.minimax(board , player , this.playableSpots)
+            console.log("Placed Computer")
             /* if(board[indexCoords[0]][indexCoords[1]] === undefined){
                 board[indexCoords[0]][indexCoords[1]] = player.marker
             }  */
             console.log(spot)
-            board[spot.index[0]][spot.index[1]] = player.marker
+            board[spot.move.x][spot.move.y] = player.marker
              
             
         } else {
@@ -63,9 +63,9 @@ const Gameboard = (()=>{
         
         playOrder.push(player)
         spotDecreaser()
-        console.log(playOrder)
+        /* console.log(playOrder)
         console.log(board)
-        console.log(playableSpots)
+        console.log(playableSpots) */
         
     }
   
@@ -167,23 +167,22 @@ const Game = (()=>{
 
     }
 
-    const minimax = (board , character) => {
+    const minimax = (board , character , depth) => {
 
         const {computer , player} = displayController
-
-        const availableSpots = []
-        const moves = []
+        
         let bestMove
+        let bestScore
 
-        board.forEach((items,x) => {
+        /* board.forEach((items,x) => {
             items.forEach((item, y) => {
                 if(board[x][y] === undefined){
                     availableSpots.push([x,y])
-                    /* moves.push(`board[${x}][${y}]`) */
+                    /* moves.push(`board[${x}][${y}]`) 
                 }
             })
             
-        })
+        }) */
         
         if(winnerChecker(player.marker)){
             return {score:-10}
@@ -193,7 +192,7 @@ const Game = (()=>{
             return {score:0}
         }
 
-        availableSpots.forEach(item => {
+        /* availableSpots.forEach(item => {
             let move = {}
             move.index = [item[0],item[1]]
             console.log([item[0],item[1]])
@@ -231,9 +230,45 @@ const Game = (()=>{
             })
         }
 
-        console.log(moves[bestMove])
-        return moves[bestMove]
+        console.log(moves)
+        console.log(bestMove)
+        return moves[bestMove] */
 
+        if (character === computer) {
+            bestScore = -Infinity
+            board.forEach((row, i) => {
+                row.forEach((cell,j) => {
+                    if (cell === undefined) {
+                        board[i][j] = character.marker;
+                        let score = minimax(board , character, depth-1).score
+                        board[i][j] = undefined
+
+                        if(score > bestScore) {
+                            bestScore = score
+                            bestMove = {x:i , y:j}
+                        }
+                    }
+                })
+            })
+        } else {
+            bestScore = Infinity
+            board.forEach((row, i) => {
+                row.forEach((cell,j) => {
+                    if (cell === undefined) {
+                        board[i][j] = character.marker;
+                        let score = minimax(board , character, depth-1).score
+                        board[i][j] = undefined
+
+                        if(score < bestScore) {
+                            bestScore = score
+                            bestMove = {x:i , y:j}
+                        }
+                    }
+                })
+            })
+        }
+
+        return {score:bestScore , move:bestMove}
 
         
 
