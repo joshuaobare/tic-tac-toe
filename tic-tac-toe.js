@@ -44,6 +44,76 @@ const Gameboard = (()=>{
 
 })()
 
+const Game = (()=>{
+    const aiMode = () => {
+
+    }
+   
+
+    const playerMode = (e) => {
+        const {playOrder} = Gameboard
+        const {player1 , player2 , displayMarkers , endState} = displayController
+        const previousPlayer = playOrder[playOrder.length - 1]
+        let activePlayer
+        
+        if (playOrder.length === 0) {
+            Gameboard.playSpot(e , player1)
+            activePlayer = player1
+        } else {
+            if (previousPlayer.marker === "X") {
+                Gameboard.playSpot(e , player2)
+                activePlayer = player2
+            } else {
+                Gameboard.playSpot(e , player1)
+                activePlayer = player1
+            }
+        }
+        displayMarkers()
+       
+       endState(activePlayer)
+    }
+
+    const drawChecker = () => {
+        const {playOrder} = Gameboard
+
+        if(playOrder.length === 9) {            
+            return true
+        } else {
+            return false
+        }
+    }
+
+    const winnerChecker = marker => {
+
+        const {board} = Gameboard
+
+        const winningCombinations = [
+            [0,1,2],
+            [0,3,6],
+            [0,4,8],
+            [1,4,7],
+            [2,5,8],
+            [2,4,6],
+            [3,4,5],
+            [6,7,8]
+        ]
+
+        const boardContent = []
+        board.forEach(items => {
+            items.forEach(item => boardContent.push(item))
+        })
+       
+        return winningCombinations.some(combination => {
+            return combination.every(item => boardContent[item] === marker)
+        })
+
+    }
+
+    
+
+    return {playerMode , drawChecker , winnerChecker}
+})()
+
 const displayController = (() => {
     const winningMessage = document.querySelector('[data-winning-message-text]')
     const winningMessageElement = document.getElementById('winningMessage')
@@ -84,44 +154,7 @@ const displayController = (() => {
     }
     
 
-    const gameFlow = (e) => {
-        const {playOrder} = Gameboard
-        const previousPlayer = playOrder[playOrder.length - 1]
-        let activePlayer
-        
-        if (playOrder.length === 0) {
-            Gameboard.playSpot(e , player1)
-            activePlayer = player1
-        } else {
-            if (previousPlayer.marker === "X") {
-                Gameboard.playSpot(e , player2)
-                activePlayer = player2
-            } else {
-                Gameboard.playSpot(e , player1)
-                activePlayer = player1
-            }
-        }
-        displayMarkers()
-       
-       endState(activePlayer)
-    }
-
-    const endState = (player) => {
-        const hasWon = winnerChecker(player.marker)
-        const hasDrawn = drawChecker()
-
-        if (hasWon) {
-            winningMessage.innerText = `${player.name} has won!`
-        } 
-        if (hasDrawn){
-            winningMessage.innerText = `DRAW!`
-        }
-
-        if (hasWon || hasDrawn) {
-            winningMessageElement.classList.add('show')
-        }
-
-    }
+    
 
     const resetGame = () => {
         
@@ -130,41 +163,7 @@ const displayController = (() => {
     }
         
 
-    const drawChecker = () => {
-        const {playOrder} = Gameboard
-
-        if(playOrder.length === 9) {            
-            return true
-        } else {
-            return false
-        }
-    }
-
-    const winnerChecker = marker => {
-
-        const {board} = Gameboard
-
-        const winningCombinations = [
-            [0,1,2],
-            [0,3,6],
-            [0,4,8],
-            [1,4,7],
-            [2,5,8],
-            [2,4,6],
-            [3,4,5],
-            [6,7,8]
-        ]
-
-        const boardContent = []
-        board.forEach(items => {
-            items.forEach(item => boardContent.push(item))
-        })
-       
-        return winningCombinations.some(combination => {
-            return combination.every(item => boardContent[item] === marker)
-        })
-
-    }
+    
 
     const displayMarkers = () => {
         cells.forEach(item => {
@@ -183,11 +182,31 @@ const displayController = (() => {
         }
         oppChecker.classList.add("hide")
     }
+
+    const endState = (player) => {
+
+        const {winnerChecker , drawChecker} = Game
+        
+        const hasWon = winnerChecker(player.marker)
+        const hasDrawn = drawChecker()
+
+        if (hasWon) {
+            winningMessage.innerText = `${player.name} has won!`
+        } 
+        if (hasDrawn){
+            winningMessage.innerText = `DRAW!`
+        }
+
+        if (hasWon || hasDrawn) {
+            winningMessageElement.classList.add('show')
+        }
+
+    }
         
     subbtn.addEventListener("click" , submitFunction)
 
     cells.forEach(item => {
-        item.addEventListener("click", gameFlow)       
+        item.addEventListener("click", Game.playerMode)       
 
     })
 
@@ -198,8 +217,11 @@ const displayController = (() => {
 
 
 
-
+    return {player1 , player2 , displayMarkers , endState}
 })()
+
+
+
 
 
 

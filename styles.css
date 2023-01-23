@@ -8,11 +8,10 @@ h1 {
     text-align: center;
     color: #D92121;
 }
-.gameboard {
+.gameboard , .ai-gameboard {
     display:grid;
     grid-template-columns: repeat(3,auto);
-    margin-top: 100px;
-     
+    margin-top: 100px;    
     
     text-align: center;
     justify-items: center;
@@ -21,7 +20,20 @@ h1 {
     align-content: center;
 }
 
-.cell {
+.ai-gameSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.player-markers {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cell , .ai-cell{
     border: 2px solid black;
     width: 150px;
     height:150px;
@@ -104,17 +116,17 @@ input {
     font-size: 1.5rem;
 }
 
-#gb-0,#gb-1,#gb-2 {
+#gb-0,#gb-1,#gb-2 , #ai-gb-0,#ai-gb-1,#ai-gb-2 {
     border-top:0 ;
 }
-#gb-0,#gb-3,#gb-6 {
+#gb-0,#gb-3,#gb-6 , #ai-gb-0,#ai-gb-3,#ai-gb-6 {
     border-left:0;
 }
 
-#gb-7,#gb-8,#gb-6 {
+#gb-7,#gb-8,#gb-6 , #ai-gb-7,#ai-gb-8,#ai-gb-6{
     border-bottom: 0;
 }
-#gb-2,#gb-5,#gb-8 {
+#gb-2,#gb-5,#gb-8 ,#ai-gb-2,#ai-gb-5,#ai-gb-8 {
     border-right: 0;
 }
 
