@@ -46,7 +46,12 @@ const Gameboard = (()=>{
 
 const Game = (()=>{
     const aiMode = () => {
-
+        const {player , computer} = displayController
+        if (player.marker === ""){
+            player.marker = "X"
+            computer.marker = "O"
+        }
+        console.log(player.marker)
     }
    
 
@@ -111,7 +116,7 @@ const Game = (()=>{
 
     
 
-    return {playerMode , drawChecker , winnerChecker}
+    return {playerMode , drawChecker , winnerChecker , aiMode}
 })()
 
 const displayController = (() => {
@@ -126,11 +131,15 @@ const displayController = (() => {
     const cells = document.querySelectorAll(".cell")
     const player1 = PlayerFactory("",'X')
     const player2 = PlayerFactory("",'O')
+    const player = PlayerFactory("You","")
+    const computer = PlayerFactory("Computer", "")
     const playerAI = document.querySelector('.player-ai')
     const playerPlayer = document.querySelector('.player-player')
     const oppChecker = document.querySelector('.opponent-matcher')
     const oppButtons = document.querySelectorAll(".confirm-opponent")
     const aIGameSection = document.querySelector(".ai-gameSection")
+    const aiCells = document.querySelectorAll(".ai-cell")
+    const markers = document.querySelectorAll(".marker")
 
     const submitFunction = (e) => {
         e.preventDefault()
@@ -160,8 +169,7 @@ const displayController = (() => {
         
         location.reload()
         
-    }
-        
+    }       
 
     
 
@@ -202,6 +210,25 @@ const displayController = (() => {
         }
 
     }
+
+    const markerAllocator = (e) => {
+        if(e.target.classList.contains("x-marker")) {
+            player.marker = "X"
+            computer.marker = "O"
+        } else {
+            player.marker = "O"
+            computer.marker = "X"
+        }
+        
+        disableMarkerBtns()
+    }
+
+    const disableMarkerBtns = () => {
+        markers.forEach(btn => {
+            btn.disabled = true
+            btn.removeEventListener("click" , markerAllocator)
+        })
+    }
         
     subbtn.addEventListener("click" , submitFunction)
 
@@ -210,14 +237,20 @@ const displayController = (() => {
 
     })
 
+    aiCells.forEach(cell => cell.addEventListener("click" , () => {
+        disableMarkerBtns()
+        Game.aiMode()
+    }))
+
     oppButtons.forEach(btn => btn.addEventListener("click" , opponentMatcher))
     
+    markers.forEach(marker => marker.addEventListener("click" , markerAllocator))
     
     restartButton.addEventListener("click" , resetGame)
 
 
 
-    return {player1 , player2 , displayMarkers , endState}
+    return {player1 , player2 , displayMarkers , endState , player , computer}
 })()
 
 
