@@ -81,7 +81,7 @@ h1 {
     display: flex;
 }
 
-.cell {
+.cell , .ai-cell {
     display: flex;
     justify-content: center;
     align-items: center;

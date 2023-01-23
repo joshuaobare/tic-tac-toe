@@ -71,7 +71,7 @@ const Gameboard = (()=>{
 
 const Game = (()=>{
     const aiMode = (e) => {
-        const {player , computer , displayMarkers} = displayController
+        const {player , computer , displayMarkers, endState} = displayController
         const {playOrder} = Gameboard
 
         if (player.marker === ""){
@@ -88,8 +88,10 @@ const Game = (()=>{
         }else if (playOrder[playOrder.length - 1].name === "Computer"){
             Gameboard.playSpot(e , player)
             displayMarkers()
+            endState(player)
             try {
                 Gameboard.playSpot(null , computer)
+                endState(computer)
             } catch{
                 console.log("Game over")
             }
