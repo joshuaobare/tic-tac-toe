@@ -15,7 +15,7 @@
 <body>
     <div id="container">
         <h1>Tic-Tac-Toe</h1>
-        <div class="formSection" id="formSection">
+        <div class="formSection hide" id="formSection">
             <div>Enter Player Names</div>
             <form action="">
                 <div class="formHeader">
@@ -53,6 +53,30 @@
                 <div class="cell" id="gb-7" data-coord ="2,1"></div>
                 <div class="cell" id="gb-8" data-coord ="2,2"></div>
             </div>
+        </div>
+
+        <div class="ai-gameSection hide">
+            <div class="playernames" id="playernames">
+                <div class="player1name" id="player1name">Player</div>
+                <div class="player2name" id="player2name">AI</div>
+            </div>
+            
+            <div class="gameboard" id="gameboard">
+                <div class="cell" id="gb-0" data-coord ="0,0"></div>
+                <div class="cell" id="gb-1" data-coord ="0,1"></div>
+                <div class="cell" id="gb-2" data-coord ="0,2"></div>
+                <div class="cell" id="gb-3" data-coord ="1,0"></div>
+                <div class="cell" id="gb-4" data-coord ="1,1"></div>
+                <div class="cell" id="gb-5" data-coord ="1,2"></div>
+                <div class="cell" id="gb-6" data-coord ="2,0"></div>
+                <div class="cell" id="gb-7" data-coord ="2,1"></div>
+                <div class="cell" id="gb-8" data-coord ="2,2"></div>
+            </div>
+        </div>
+
+        <div class="opponent-matcher">
+            <button class="player-ai confirm-opponent"> Player vs AI</button>
+            <button class="player-player confirm-opponent">Player vs Player</button>
         </div>
     </div>
     <div class="winning-message" id="winningMessage">

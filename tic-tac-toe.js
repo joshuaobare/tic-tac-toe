@@ -56,6 +56,11 @@ const displayController = (() => {
     const cells = document.querySelectorAll(".cell")
     const player1 = PlayerFactory("",'X')
     const player2 = PlayerFactory("",'O')
+    const playerAI = document.querySelector('.player-ai')
+    const playerPlayer = document.querySelector('.player-player')
+    const oppChecker = document.querySelector('.opponent-matcher')
+    const oppButtons = document.querySelectorAll(".confirm-opponent")
+    const aIGameSection = document.querySelector(".ai-gameSection")
 
     const submitFunction = (e) => {
         e.preventDefault()
@@ -168,6 +173,16 @@ const displayController = (() => {
         })
         
     }
+
+    const opponentMatcher = (e) => {
+        if (e.target.classList.contains("player-ai")){
+            aIGameSection.classList.remove("hide")
+        }
+        else {
+            formSection.classList.remove("hide")
+        }
+        oppChecker.classList.add("hide")
+    }
         
     subbtn.addEventListener("click" , submitFunction)
 
@@ -175,8 +190,13 @@ const displayController = (() => {
         item.addEventListener("click", gameFlow)       
 
     })
+
+    oppButtons.forEach(btn => btn.addEventListener("click" , opponentMatcher))
+    
     
     restartButton.addEventListener("click" , resetGame)
+
+
 
 
 })()
