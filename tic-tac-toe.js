@@ -28,12 +28,33 @@ const Gameboard = (()=>{
     }
     
     const playSpot = (e , player) => {
-        const { coord } = e.target.dataset 
-        const coords = coordBuilder(coord)        
+        
+        if (!e) {
+            const indexCoords = []
+            const undefValue = board.find(items => items.some(item => {
+                indexCoords.push(items.indexOf(item))
+                return item === undefined}))
+            
+            
+            /* console.log(undefValue) */
+            const index = board.indexOf(undefValue)
+            /* console.log(index) */
+            indexCoords.unshift(index)
+            /* console.log(indexCoords) */
+            if(board[indexCoords[0]][indexCoords[1]] === undefined){
+                board[indexCoords[0]][indexCoords[1]] = player.marker
+            }
+        } else {
+            const { coord } = e.target.dataset 
+            const coords = coordBuilder(coord)
 
-        if(board[coords[0]][coords[1]] === undefined){
-            board[coords[0]][coords[1]] = player.marker
+
+            if(board[coords[0]][coords[1]] === undefined){
+                board[coords[0]][coords[1]] = player.marker
+            }
         }
+
+        
         playOrder.push(player)
         spotDecreaser()
         
@@ -51,6 +72,7 @@ const Game = (()=>{
             player.marker = "X"
             computer.marker = "O"
         }
+        
         
     }
    
@@ -223,6 +245,8 @@ const displayController = (() => {
         } else {
             player.marker = "O"
             computer.marker = "X"
+            Gameboard.playSpot(null,computer)
+            displayMarkers()
         }
         
         disableMarkerBtns()
