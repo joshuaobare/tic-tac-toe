@@ -41,7 +41,7 @@ const Gameboard = (()=>{
                 })
             })
 
-            const spot = Game.minimax(board , player , this.playableSpots)
+            const spot = Game.minimax(board , player , 20)
             console.log("Placed Computer")
             /* if(board[indexCoords[0]][indexCoords[1]] === undefined){
                 board[indexCoords[0]][indexCoords[1]] = player.marker
@@ -167,6 +167,72 @@ const Game = (()=>{
 
     }
 
+
+    /* const evaluate = (board, depth) => {
+        let xCount = 0;
+        let oCount = 0;
+        let xWinningLines = 0;
+        let oWinningLines = 0;
+        let emptySpaces = 0;
+    
+        // Check rows, columns and diagonals
+        for (let i = 0; i < 3; i++) {
+            if (board[i][0] === "X" && board[i][1] === "X" && board[i][2] === "X") xWinningLines++;
+            if (board[i][0] === "O" && board[i][1] === "O" && board[i][2] === "O") oWinningLines++;
+            if (board[0][i] === "X" && board[1][i] === "X" && board[2][i] === "X") xWinningLines++;
+            if (board[0][i] === "O" && board[1][i] === "O" && board[2][i] === "O") oWinningLines++;
+        }
+        if (board[0][0] === "X" && board[1][1] === "X" && board[2][2] === "X") xWinningLines++;
+        if (board[0][0] === "O" && board[1][1] === "O" && board[2][2] === "O") oWinningLines++;
+        if (board[0][2] === "X" && board[1][1] === "X" && board[2][0] === "X") xWinningLines++;
+        if (board[0][2] === "O" && board[1][1] === "O" && board[2][0] === "O") oWinningLines++;
+    
+        // Count the number of X and O markers on the board
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[i][j] === "X") xCount++;
+                if (board[i][j] === "O") oCount++;
+                if (board[i][j] === "") emptySpaces++;
+            }
+        }
+    
+        // Assign a score based on the heuristics
+        let score = 0;
+        if (xWinningLines > 0) score = 10 + xWinningLines + depth;
+        else if (oWinningLines > 0) score = -10 - oWinningLines - depth;
+        else score = (xCount - oCount) + emptySpaces;
+    
+        return score;
+    }; */
+
+    const evaluate = (board,player) => {
+        // Check rows
+        for (let i = 0; i < 3; i++) {
+            if (board[i][0] === board[i][1] && board[i][1] === board[i][2]) {
+                if (board[i][0] === player.marker) return 10;
+                else if (board[i][0] === !player.marker) return -10;
+            }
+        }
+        // Check columns
+        for (let i = 0; i < 3; i++) {
+            if (board[0][i] === board[1][i] && board[1][i] === board[2][i]) {
+                if (board[0][i] === player.marker) return 10;
+                else if (board[0][i] === !player.marker) return -10;
+            }
+        }
+        // Check diagonals
+        if (board[0][0] === board[1][1] && board[1][1] === board[2][2]) {
+            if (board[0][0] === player.marker) return 10;
+            else if (board[0][0] === !player.marker) return -10;
+        }
+        if (board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
+            if (board[0][2] === !player.marker) return 10;
+            else if (board[0][2] === !player.marker) return -10;
+        }
+        // Otherwise, it's a draw
+        return 0;
+    };
+    
     const minimax = (board , character , depth) => {
 
         const {computer , player} = displayController
@@ -174,66 +240,21 @@ const Game = (()=>{
         let bestMove
         let bestScore
 
-        /* board.forEach((items,x) => {
-            items.forEach((item, y) => {
-                if(board[x][y] === undefined){
-                    availableSpots.push([x,y])
-                    /* moves.push(`board[${x}][${y}]`) 
-                }
-            })
-            
-        }) */
         
-        if(winnerChecker(player.marker)){
+         /* if(winnerChecker(player.marker)){
             return {score:-10}
         } else if (winnerChecker(computer.marker)){
             return {score:10}
         } else if (drawChecker()){
             return {score:0}
+        }  */
+
+        if(depth === 0 || winnerChecker(player) || winnerChecker(computer)) {
+            return {score: evaluate(board, player)}
         }
+       
 
-        /* availableSpots.forEach(item => {
-            let move = {}
-            move.index = [item[0],item[1]]
-            console.log([item[0],item[1]])
-
-            board[item[0]][item[1]] = character.marker
-
-            if (character === computer){
-                let result = minimax(board , player)
-                move.score = result.score
-            } else {
-                let result = minimax(board , computer)
-                move.score = result.score
-            }
-
-            [item[0],item[1]] = move.index
-            moves.push(move)
-            
-        })
-
-        if (character === computer){
-            let bestScore = -10000
-            moves.forEach((item , index) => {
-                if(item.score > bestScore){
-                    bestScore = item.score
-                    bestMove = index
-                }
-            })
-        } else {
-            let bestScore = 10000
-            moves.forEach((item , index) => {
-                if(item.score < bestScore){
-                    bestScore = item.score
-                    bestMove = index
-                }
-            })
-        }
-
-        console.log(moves)
-        console.log(bestMove)
-        return moves[bestMove] */
-
+        
         if (character === computer) {
             bestScore = -Infinity
             board.forEach((row, i) => {
