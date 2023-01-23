@@ -41,14 +41,14 @@ const Gameboard = (()=>{
                 })
             })
 
-            const spot = Game.minimax(board , player , 20)
+            const spot = Game.minimax(board , player)
             console.log("Placed Computer")
             /* if(board[indexCoords[0]][indexCoords[1]] === undefined){
                 board[indexCoords[0]][indexCoords[1]] = player.marker
             }  */
             console.log(spot)
-            board[spot.move.x][spot.move.y] = player.marker
-             
+            /* board[spot.move.x][spot.move.y] = player.marker */
+            board[spot.index[0]][spot.index[1]] = player.marker
             
         } else {
             const { coord } = e.target.dataset 
@@ -66,7 +66,7 @@ const Gameboard = (()=>{
         /* console.log(playOrder)
         console.log(board)
         console.log(playableSpots) */
-        
+        this.playableSpots -= 1
     }
   
 
@@ -132,9 +132,9 @@ const Game = (()=>{
     }
 
     const drawChecker = () => {
-        const {playOrder} = Gameboard
+        const {playOrder,playableSpots} = Gameboard
 
-        if(playOrder.length === 9) {            
+        if((playOrder.length === 9)&&(playableSpots === 0) ){            
             return true
         } else {
             return false
@@ -226,14 +226,14 @@ const Game = (()=>{
             else if (board[0][0] === !player.marker) return -10;
         }
         if (board[0][2] === board[1][1] && board[1][1] === board[2][0]) {
-            if (board[0][2] === !player.marker) return 10;
+            if (board[0][2] === player.marker) return 10;
             else if (board[0][2] === !player.marker) return -10;
         }
         // Otherwise, it's a draw
         return 0;
     };
     
-    const minimax = (board , character , depth) => {
+    /* const minimax = (board , character , depth) => {
 
         const {computer , player} = displayController
         
@@ -241,17 +241,17 @@ const Game = (()=>{
         let bestScore
 
         
-         /* if(winnerChecker(player.marker)){
+          if(winnerChecker(player.marker)){
             return {score:-10}
         } else if (winnerChecker(computer.marker)){
             return {score:10}
         } else if (drawChecker()){
             return {score:0}
-        }  */
+        }  
 
-        if(depth === 0 || winnerChecker(player) || winnerChecker(computer)) {
-            return {score: evaluate(board, player)}
-        }
+       /*  if(depth === 0 || winnerChecker(player) || winnerChecker(computer)) {
+            return {score: evaluate(board, player), move:bestMove}
+        } 
        
 
         
@@ -265,7 +265,7 @@ const Game = (()=>{
                         board[i][j] = undefined
 
                         if(score > bestScore) {
-                            bestScore = score
+                            bestScore = Math.max(bestScore , score)
                             bestMove = {x:i , y:j}
                         }
                     }
@@ -281,7 +281,7 @@ const Game = (()=>{
                         board[i][j] = undefined
 
                         if(score < bestScore) {
-                            bestScore = score
+                            bestScore = Math.min(bestScore , score)
                             bestMove = {x:i , y:j}
                         }
                     }
@@ -290,6 +290,96 @@ const Game = (()=>{
         }
 
         return {score:bestScore , move:bestMove}
+   
+
+        
+        
+        
+
+
+
+
+
+    } */
+
+    const minimax = (board , character) => {
+
+        const {computer , player} = displayController
+        
+        const availableSpots = []
+        const moves = []
+        let bestMove = ""
+
+        board.forEach((items,x) => {
+            items.forEach((item, y) => {
+                if(board[x][y] === undefined){
+                    availableSpots.push([x,y])
+                    /* moves.push(`board[${x}][${y}]`) */
+                }
+            })
+            
+        })
+        
+        if(winnerChecker(player.marker)){
+            return {score:-10}
+        } else if (winnerChecker(computer.marker)){
+            return {score:10}
+        } else if (availableSpots.length === 0){
+            return {score:0}
+        }
+
+        availableSpots.forEach(item => {
+            let move = {}
+            move.index = [item[0],item[1]]
+          //  console.log([item[0],item[1]])
+
+            board[item[0]][item[1]] = character.marker
+
+            if (character === computer){
+                var result = minimax(board , player)                
+                move.score = result.score
+                board[item[0]][item[1]] = undefined
+                
+            } else {
+                var result = minimax(board , computer)
+                /* console.log(result) */
+                move.score = result.score
+                board[item[0]][item[1]] = undefined
+                
+            }
+
+            /* board[item[0]][item[1]] = undefined */
+            /* console.log([item[0],item[1]] )
+            console.log(move.index) */
+            /* console.log(move) */
+            
+            moves.push(move)
+            
+        })
+
+        if (character === computer){
+            let bestScore = -10000
+            moves.forEach((item , index) => {
+                
+                if(item.score > bestScore){
+                    /* console.log(item.score) */
+                    bestScore = item.score
+                    bestMove = index
+                }
+            })
+        } else {
+            let bestScore = 10000
+            moves.forEach((item , index) => {
+                if(item.score < bestScore){
+                    bestScore = item.score
+                    bestMove = index
+                }
+            })
+        }
+        console.log(availableSpots)
+        /* console.log(moves[bestMove]) */
+        return moves[bestMove]
+
 
         
 
@@ -302,6 +392,7 @@ const Game = (()=>{
 
 
     }
+
 
 
     
