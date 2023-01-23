@@ -24,7 +24,7 @@ const Gameboard = (()=>{
     playableSpots = 9
 
     const spotDecreaser = () => {
-        playableSpots -= 1
+        this.playableSpots -= 1
     }
     
     const playSpot = (e , player) => {
@@ -40,10 +40,14 @@ const Gameboard = (()=>{
                     }
                 })
             })
+
+            const spot =Game.minimax(board , player)
                         
-            if(board[indexCoords[0]][indexCoords[1]] === undefined){
+            /* if(board[indexCoords[0]][indexCoords[1]] === undefined){
                 board[indexCoords[0]][indexCoords[1]] = player.marker
-            } 
+            }  */
+            console.log(spot)
+            board[spot.index[0]][spot.index[1]] = player.marker
              
             
         } else {
@@ -61,6 +65,7 @@ const Gameboard = (()=>{
         spotDecreaser()
         console.log(playOrder)
         console.log(board)
+        console.log(playableSpots)
         
     }
   
@@ -162,9 +167,90 @@ const Game = (()=>{
 
     }
 
+    const minimax = (board , character) => {
+
+        const {computer , player} = displayController
+
+        const availableSpots = []
+        const moves = []
+        let bestMove
+
+        board.forEach((items,x) => {
+            items.forEach((item, y) => {
+                if(board[x][y] === undefined){
+                    availableSpots.push([x,y])
+                    /* moves.push(`board[${x}][${y}]`) */
+                }
+            })
+            
+        })
+        
+        if(winnerChecker(player.marker)){
+            return {score:-10}
+        } else if (winnerChecker(computer.marker)){
+            return {score:10}
+        } else if (drawChecker()){
+            return {score:0}
+        }
+
+        availableSpots.forEach(item => {
+            let move = {}
+            move.index = [item[0],item[1]]
+            console.log([item[0],item[1]])
+
+            board[item[0]][item[1]] = character.marker
+
+            if (character === computer){
+                let result = minimax(board , player)
+                move.score = result.score
+            } else {
+                let result = minimax(board , computer)
+                move.score = result.score
+            }
+
+            [item[0],item[1]] = move.index
+            moves.push(move)
+            
+        })
+
+        if (character === computer){
+            let bestScore = -10000
+            moves.forEach((item , index) => {
+                if(item.score > bestScore){
+                    bestScore = item.score
+                    bestMove = index
+                }
+            })
+        } else {
+            let bestScore = 10000
+            moves.forEach((item , index) => {
+                if(item.score < bestScore){
+                    bestScore = item.score
+                    bestMove = index
+                }
+            })
+        }
+
+        console.log(moves[bestMove])
+        return moves[bestMove]
+
+
+        
+
+        
+        
+        
+
+
+
+
+
+    }
+
+
     
 
-    return {playerMode , drawChecker , winnerChecker , aiMode}
+    return {playerMode , drawChecker , winnerChecker , aiMode , minimax}
 })()
 
 const displayController = (() => {
