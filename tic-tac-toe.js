@@ -51,7 +51,7 @@ const Game = (()=>{
             player.marker = "X"
             computer.marker = "O"
         }
-        console.log(player.marker)
+        
     }
    
 
@@ -175,6 +175,11 @@ const displayController = (() => {
 
     const displayMarkers = () => {
         cells.forEach(item => {
+            const coords = coordBuilder(item.dataset.coord)
+            item.textContent = Gameboard.board[coords[0]][coords[1]]
+        })
+
+        aiCells.forEach(item => {
             const coords = coordBuilder(item.dataset.coord)
             item.textContent = Gameboard.board[coords[0]][coords[1]]
         })
