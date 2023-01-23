@@ -31,19 +31,21 @@ const Gameboard = (()=>{
         
         if (!e) {
             const indexCoords = []
-            const undefValue = board.find(items => items.some(item => {
-                indexCoords.push(items.indexOf(item))
-                return item === undefined}))
             
-            
-            /* console.log(undefValue) */
-            const index = board.indexOf(undefValue)
-            /* console.log(index) */
-            indexCoords.unshift(index)
-            /* console.log(indexCoords) */
+            board.forEach((items,x) => {
+                items.forEach((item, y) => {
+                    if(board[x][y] === undefined){
+                        indexCoords.push(x)
+                        indexCoords.push(y)
+                    }
+                })
+            })
+                        
             if(board[indexCoords[0]][indexCoords[1]] === undefined){
                 board[indexCoords[0]][indexCoords[1]] = player.marker
-            }
+            } 
+             
+            
         } else {
             const { coord } = e.target.dataset 
             const coords = coordBuilder(coord)
@@ -57,6 +59,8 @@ const Gameboard = (()=>{
         
         playOrder.push(player)
         spotDecreaser()
+        console.log(playOrder)
+        console.log(board)
         
     }
   
@@ -66,14 +70,34 @@ const Gameboard = (()=>{
 })()
 
 const Game = (()=>{
-    const aiMode = () => {
-        const {player , computer} = displayController
+    const aiMode = (e) => {
+        const {player , computer , displayMarkers} = displayController
+        const {playOrder} = Gameboard
+
         if (player.marker === ""){
             player.marker = "X"
             computer.marker = "O"
         }
-        
-        
+
+        if (playOrder.length === 0 ) {
+            Gameboard.playSpot(e , player)
+            displayMarkers()
+            Gameboard.playSpot(null , computer)
+            displayMarkers()
+
+        }else if (playOrder[playOrder.length - 1].name === "Computer"){
+            Gameboard.playSpot(e , player)
+            displayMarkers()
+            try {
+                Gameboard.playSpot(null , computer)
+            } catch{
+                console.log("Game over")
+            }
+            
+            displayMarkers()
+        } 
+
+        displayMarkers()
     }
    
 
@@ -266,9 +290,9 @@ const displayController = (() => {
 
     })
 
-    aiCells.forEach(cell => cell.addEventListener("click" , () => {
+    aiCells.forEach(cell => cell.addEventListener("click" , (e) => {
         disableMarkerBtns()
-        Game.aiMode()
+        Game.aiMode(e)
     }))
 
     oppButtons.forEach(btn => btn.addEventListener("click" , opponentMatcher))
