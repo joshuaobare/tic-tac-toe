@@ -4,34 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
+    <title>Tic-Tac-Toe</title>    
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One|Press+Start+2P&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="styles.css">
-    <link
-			href="https://fonts.googleapis.com/css?family=Fredoka+One|Press+Start+2P&display=swap"
-			rel="stylesheet"
-		/>
     <script src="tic-tac-toe.js" defer></script>
 </head>
 <body>
     <div id="container">
         <h1>Tic-Tac-Toe</h1>
         <div class="formSection hide" id="formSection">
-            <div>Enter Player Names</div>
+            <h3 class="formSection-header">Enter Player Names</h3>
             <form action="">
                 <div class="formHeader">
-                    <div>
-                        <label for="player1">Player 1:</label>
-                        <input type="text" id="player1" name="player1">
+                    <div class="form-item">
+                        <label for="player1">Player 1</label>
+                        <input type="text" id="player1" name="player1" placeholder="Enter Name">
                     </div>
-                    <div>
-                        <label for="player2">Player 2:</label>
-                        <input type="text" id="player2" name="player2">
+                    <div class="form-item">
+                        <label for="player2">Player 2</label>
+                        <input type="text" id="player2" name="player2" placeholder="Enter Name">
+                    </div>
+                    <div class="form-btn-cont">
+                        <button type="submit" id="submit">Start Game</button>
                     </div>
                 </div>
                 
-                <div>
-                    <button type="submit" id="submit">Start Game</button>
-                </div>
+                
                 
             </form>
             
@@ -60,6 +59,17 @@
                 <button class="x-marker marker">X</button>
                 <button class="o-marker marker">O</button>
             </div>
+
+            <div class="marker-identifiers hide">
+                <div class="player-identifier">
+                    <div>Player: </div>
+                    <div class="player-marker"></div>
+                </div>
+                <div class="ai-identifier">
+                    <div>AI: </div>
+                    <div class="ai-marker"></div>
+                </div>
+            </div>
             
             <div class="ai-gameboard" id="ai-gameboard">
                 <div class="ai-cell" id="ai-gb-0" data-coord ="0,0"></div>
@@ -75,12 +85,18 @@
         </div>
 
         <div class="opponent-matcher">
-            <button class="player-ai confirm-opponent"> Player vs AI</button>
-            <button class="player-player confirm-opponent">Player vs Player</button>
+            <button class="player-ai confirm-opponent">
+                <div class="player-ai" >AI Opponent</div>
+                <span class="material-symbols-outlined player-ai">smart_toy</span>
+            </button>
+            <button class="player-player confirm-opponent">
+                <div class="player-player">Two Player</div>                
+                <span class="material-symbols-outlined player-player">group</span>
+            </button>
         </div>
     </div>
     <div class="winning-message" id="winningMessage">
-        <div data-winning-message-text>   YOU WIN     </div>
+        <div data-winning-message-text class="winning-message-text">   YOU WIN     </div>
         <button id="restartButton">Restart</button>
     </div>
 </body>

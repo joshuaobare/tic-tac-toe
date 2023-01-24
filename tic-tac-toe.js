@@ -258,6 +258,10 @@ const displayController = (() => {
     const aIGameSection = document.querySelector(".ai-gameSection")
     const aiCells = document.querySelectorAll(".ai-cell")
     const markers = document.querySelectorAll(".marker")
+    const playerMarkers = document.querySelector(".player-markers")
+    const identifierCont = document.querySelector(".marker-identifiers")
+    const playerMarker = document.querySelector(".player-marker")
+    const aiMarker = document.querySelector(".ai-marker")
 
     const submitFunction = (e) => {
         e.preventDefault()
@@ -305,10 +309,11 @@ const displayController = (() => {
     }
 
     const opponentMatcher = (e) => {
+        console.log(e.target)
         if (e.target.classList.contains("player-ai")){
             aIGameSection.classList.remove("hide")
         }
-        else {
+        else if(e.target.classList.contains("player-player")) {
             formSection.classList.remove("hide")
         }
         oppChecker.classList.add("hide")
@@ -353,6 +358,10 @@ const displayController = (() => {
             btn.disabled = true
             btn.removeEventListener("click" , markerAllocator)
         })
+        playerMarkers.classList.add("hide")
+        identifierCont.classList.remove("hide")
+        playerMarker.innerText = player.marker
+        aiMarker.innerText = computer.marker
     }
         
     subbtn.addEventListener("click" , submitFunction)
