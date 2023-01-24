@@ -134,7 +134,7 @@ const Game = (()=>{
     }
 
     const drawChecker = () => {
-        const {playOrder,playableSpots} = Gameboard
+        const {playOrder } = Gameboard
 
         if(playOrder.length === 9){            
             return true
@@ -182,7 +182,7 @@ const Game = (()=>{
             items.forEach((item, y) => {
                 if(board[x][y] === undefined){
                     availableSpots.push([x,y])
-                    /* moves.push(`board[${x}][${y}]`) */
+                    
                 }
             })
             
@@ -273,6 +273,10 @@ const displayController = (() => {
     const identifierCont = document.querySelector(".marker-identifiers")
     const playerMarker = document.querySelector(".player-marker")
     const aiMarker = document.querySelector(".ai-marker")
+    const player1namecont = document.querySelector(".player1cont")
+    const player1markercont = document.querySelector(".player1marker")
+    const player2namecont = document.querySelector(".player2cont")
+    const player2markercont = document.querySelector(".player2marker")
 
     const submitFunction = (e) => {
         e.preventDefault()
@@ -290,9 +294,10 @@ const displayController = (() => {
         
         player1.name = name1
         player2.name = name2        
-        player1name.innerText = `${name1}: ${player1.marker} `
-        player2name.innerText = `${name2}: ${player2.marker} `
-        
+        player1namecont.innerText = name1
+        player2namecont.innerText = name2
+        player1markercont.innerText = player1.marker
+        player2markercont.innerText = player2.marker
     }
     
 
@@ -341,7 +346,7 @@ const displayController = (() => {
             winningMessage.innerText = `${player.name} has won!`
         } 
         if (hasDrawn){
-            winningMessage.innerText = `DRAW!`
+            winningMessage.innerText = `It's a tie!`
         }
 
         if (hasWon || hasDrawn) {
@@ -360,6 +365,8 @@ const displayController = (() => {
             Gameboard.playSpot(null,computer)
             displayMarkers()
         }
+
+        
         
         disableMarkerBtns()
     }
@@ -383,6 +390,7 @@ const displayController = (() => {
     })
 
     aiCells.forEach(cell => cell.addEventListener("click" , (e) => {
+        
         disableMarkerBtns()
         Game.aiMode(e)
     }, {once:true}))
