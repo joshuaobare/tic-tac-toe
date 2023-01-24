@@ -68,7 +68,7 @@ const Gameboard = (()=>{
 const Game = (()=>{
     const aiMode = (e) => {
         const {player , computer , displayMarkers, endState} = displayController
-        const {playOrder} = Gameboard
+        const {playOrder , board} = Gameboard
 
         if (player.marker === ""){
             player.marker = "X"
@@ -82,17 +82,28 @@ const Game = (()=>{
             displayMarkers()
 
         }else if (playOrder[playOrder.length - 1].name === "Computer"){
-            Gameboard.playSpot(e , player)
-            displayMarkers()
-            endState(player)
-            try {
-                Gameboard.playSpot(null , computer)
-                endState(computer)
-            } catch{
-                console.log("Game over")
+            
+            if(e.target.dataset.coord !== null) {
+                
+                if (e.target.textContent !== ""){
+                    
+                    return 
+                } else {
+                    Gameboard.playSpot(e , player)
+                    displayMarkers()
+                    endState(player)
+                    try {
+                        Gameboard.playSpot(null , computer)
+                        endState(computer)
+                    } catch{
+                        console.log("Game over")
+                    }
+                    
+                    displayMarkers()
+                }
             }
             
-            displayMarkers()
+            
         } 
 
         displayMarkers()
@@ -374,7 +385,7 @@ const displayController = (() => {
     aiCells.forEach(cell => cell.addEventListener("click" , (e) => {
         disableMarkerBtns()
         Game.aiMode(e)
-    }))
+    }, {once:true}))
 
     oppButtons.forEach(btn => btn.addEventListener("click" , opponentMatcher))
     
